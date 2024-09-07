@@ -7,11 +7,13 @@ import { draftMode } from 'next/headers'
 import React, { cache } from 'react'
 import { homeStatic } from '@/endpoints/seed/home-static'
 
-import type { Page as PageType } from '@/payload-types'
+import type { Page, Page as PageType } from '@/payload-types'
 
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
+import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies'
+import { notFound } from 'next/navigation'
 
 export async function generateStaticParams() {
   const payload = await getPayloadHMR({ config: configPromise })
@@ -29,14 +31,12 @@ export async function generateStaticParams() {
     .map(({ slug }) => slug)
 }
 
-export default async function Page({ params: { slug = 'home' } }) {
+export default async function Page({ params: { slug } }) {
   const url = '/' + slug
-
+  console.log("SLUGGGG", slug)
   let page: PageType | null
 
-  page = await queryPageBySlug({
-    slug,
-  })
+  page = await queryPageBySlug(slug);
 
   // Remove this code once your website is seeded
   if (!page) {
@@ -60,18 +60,23 @@ export default async function Page({ params: { slug = 'home' } }) {
   )
 }
 
-export async function generateMetadata({ params: { slug = 'home' } }): Promise<Metadata> {
-  const page = await queryPageBySlug({
-    slug,
-  })
+export async function generateMetadata({ params: { slug } }): Promise<Metadata> {
+  const page = await queryPageBySlug(slug);
+
+  if (!page) return notFound();
 
   return generateMeta({ doc: page })
 }
+ 
+export const queryPageBySlug = cache(async (
+  incomingSlugSegments?: string[]
+): Promise<Page | null> => {
+  const slugSegments = incomingSlugSegments || ['home'];
+  const slug = slugSegments.at(-1);
 
-const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
-  const { isEnabled: draft } = draftMode()
+  const { isEnabled: draft } = draftMode();
 
-  const payload = await getPayloadHMR({ config: configPromise })
+  const payload = await getPayloadHMR({ config: configPromise });
 
   const result = await payload.find({
     collection: 'pages',
@@ -80,9 +85,9 @@ const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
     overrideAccess: true,
     where: {
       slug: {
-        equals: slug,
-      },
-    },
+        equals: slug
+      }
+    }
   })
 
   return result.docs?.[0] || null

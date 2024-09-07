@@ -2,7 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('../../assets/css/clash-display.css');
+
 @layer base {
+
   h1,
   h2,
   h3,
@@ -88,9 +91,6 @@
   * {
     @apply border-border;
   }
-  body {
-    @apply bg-background text-foreground;
-  }
 }
 
 html {
@@ -100,4 +100,10 @@ html {
 html[data-theme='dark'],
 html[data-theme='light'] {
   opacity: initial;
+  font-family: 'ClashDisplay-Variable';
+  background-color: #0A2540;
+}
+
+h1, h2, h3, h4, h5, h6, p, a, li, label {
+  color: white;
 }

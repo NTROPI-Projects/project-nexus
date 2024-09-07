@@ -5,6 +5,8 @@ import {
   HeadingFeature,
   InlineToolbarFeature,
   lexicalEditor,
+  OrderedListFeature,
+  UnorderedListFeature
 } from '@payloadcms/richtext-lexical'
 
 import { link } from '@/fields/link'
@@ -31,6 +33,10 @@ const columnFields: Field[] = [
         label: 'Full',
         value: 'full',
       },
+      {
+        label: 'Media',
+        value: 'media'
+      }
     ],
   },
   {
@@ -43,10 +49,23 @@ const columnFields: Field[] = [
           HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4'] }),
           FixedToolbarFeature(),
           InlineToolbarFeature(),
+          OrderedListFeature(),
+          UnorderedListFeature()
         ]
       },
     }),
     label: false,
+    admin: {
+      condition: (_, { size }) => Boolean(size !== 'media')
+    },
+  },
+  {
+    name: 'media',
+    type: 'upload',
+    relationTo: 'media',
+    admin: {
+      condition: (_, { size }) => Boolean(size === 'media')
+    }
   },
   {
     name: 'enableLink',

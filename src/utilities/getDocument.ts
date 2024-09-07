@@ -6,7 +6,7 @@ import { unstable_cache } from 'next/cache'
 
 type Collection = keyof Config['collections']
 
-async function getDocument(collection: Collection, slug: string, depth = 0) {
+export async function getDocument(collection: Collection, slug: string, depth = 0) {
   const payload = await getPayloadHMR({ config: configPromise })
 
   const page = await payload.find({

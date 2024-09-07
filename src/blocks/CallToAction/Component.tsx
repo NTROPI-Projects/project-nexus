@@ -14,11 +14,10 @@ export const CallToActionBlock: React.FC<
 > = ({ links, richText }) => {
   return (
     <div className="container">
-      <div className="bg-card rounded border-border border p-4 flex flex-col gap-8 md:flex-row md:justify-between md:items-center">
-        <div className="max-w-[48rem] flex items-center">
+      <div className="bg-card rounded border-border border p-4 lg:p-24 flex flex-col gap-8 md:flex-row md:justify-between md:items-center">
+        <div className="max-w-[40rem] flex items-start flex-col gap-8">
           {richText && <RichText className="mb-0" content={richText} enableGutter={false} />}
-        </div>
-        <div className="flex flex-col gap-8">
+          
           {(links || []).map(({ link }, i) => {
             return <CMSLink key={i} size="lg" {...link} />
           })}

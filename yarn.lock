@@ -1777,7 +1777,7 @@
     "@payloadcms/ui" "3.0.0-beta.97"
     escape-html "^1.0.3"
 
-"@payloadcms/plugin-nested-docs@beta":
+"@payloadcms/plugin-nested-docs@3.0.0-beta.97":
   version "3.0.0-beta.97"
   resolved "https://registry.yarnpkg.com/@payloadcms/plugin-nested-docs/-/plugin-nested-docs-3.0.0-beta.97.tgz#cbd4ea2513576aaa137bc54c2776449494210170"
   integrity sha512-QxTl5ruLZQoFrr3WFcgrSNdr6tIqaJWmkByv14DXlUgumLMRvM2vIAwKXhdXixzh/4sA/PindBjfr05xNIP84g==

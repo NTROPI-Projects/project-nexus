@@ -5,6 +5,7 @@ import RichText from '@/components/RichText'
 import type { Page } from '@/payload-types'
 
 import { CMSLink } from '../../components/Link'
+import { Media } from '@/components/Media'
 
 type Props = Extract<Page['layout'][0], { blockType: 'content' }>
 
@@ -20,7 +21,17 @@ export const ContentBlock: React.FC<
     half: '6',
     oneThird: '4',
     twoThirds: '8',
+    media: '12',
   }
+
+  // Calculate total columns used
+  const usedColumns = columns?.reduce((acc, col) => {
+    if (col.size === 'media') return acc
+    return acc + parseInt(colsSpanClasses[col.size!])
+  }, 0) || 0
+
+  // Calculate remaining columns for media
+  const remainingColumns = 12 - (usedColumns % 12)
 
   return (
     <div className="container my-16">
@@ -28,7 +39,18 @@ export const ContentBlock: React.FC<
         {columns &&
           columns.length > 0 &&
           columns.map((col, index) => {
-            const { enableLink, link, richText, size } = col
+            const { enableLink, link, richText, size, media } = col
+
+            if (size === 'media' && media) {
+              return (
+                <div
+                  className={`col-span-4 lg:col-span-${remainingColumns}`}
+                  key={index}
+                >
+                  <Media resource={media} />
+                </div>
+              )
+            }
 
             return (
               <div
@@ -38,7 +60,6 @@ export const ContentBlock: React.FC<
                 key={index}
               >
                 {richText && <RichText content={richText} enableGutter={false} />}
-
                 {enableLink && <CMSLink {...link} />}
               </div>
             )
