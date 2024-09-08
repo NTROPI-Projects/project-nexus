@@ -23,7 +23,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
       </head>
-      <body>
+      <body className="flex min-h-full flex-col">
         <Providers>
           <AdminBar
             adminBarProps={{
@@ -33,7 +33,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <LivePreviewListener />
 
           <Header />
-          {children}
+          <div className="relative flex flex-auto">
+            <main className="w-full flex-auto">{children}</main>
+          </div>
           <Footer />
         </Providers>
       </body>

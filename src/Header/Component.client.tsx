@@ -3,7 +3,7 @@ import { useHeaderTheme } from '@/providers/HeaderTheme'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
-
+import Headroom from 'react-headroom'
 import type { Header } from '@/payload-types'
 
 import { Logo } from '@/components/Logo/Logo'
@@ -30,14 +30,16 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ header }) => {
   }, [headerTheme])
 
   return (
-    <header
-      className="container relative z-20 py-8 flex justify-between"
-      {...(theme ? { 'data-theme': theme } : {})}
-    >
-      <Link href="/">
-        <Logo />
-      </Link>
-      <HeaderNav header={header} />
-    </header>
+    <Headroom>
+      <header
+        className="container relative z-20 py-8 flex justify-between"
+        {...(theme ? { 'data-theme': theme } : {})}
+      >
+        <Link href="/">
+          <Logo />
+        </Link>
+        <HeaderNav header={header} />
+      </header>
+    </Headroom>
   )
 }
