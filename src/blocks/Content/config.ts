@@ -10,6 +10,7 @@ import {
 } from '@payloadcms/richtext-lexical'
 
 import { link } from '@/fields/link'
+import { backgroundColorField } from '@/fields/backgroundColor'
 
 const columnFields: Field[] = [
   {
@@ -84,6 +85,7 @@ export const Content: Block = {
   slug: 'content',
   interfaceName: 'ContentBlock',
   fields: [
+    ...backgroundColorField(),
     {
       name: 'columns',
       type: 'array',

@@ -14,8 +14,22 @@ export const Header: GlobalConfig = {
       type: 'array',
       fields: [
         link({
-          appearances: false,
+          appearances: false,          
         }),
+        {
+          name: 'appearance',
+          type: 'select',         
+          options: [           
+            {
+              label: 'Default',
+              value: 'default',
+            },
+            {
+              label: 'Call to Action',
+              value: 'call-to-action',
+            },
+          ],
+        },
       ],
       maxRows: 6,
     },

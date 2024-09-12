@@ -34,7 +34,7 @@ export const ContentBlock: React.FC<
   const remainingColumns = 12 - (usedColumns % 12)
 
   return (
-    <div className="container my-16">
+    <div className="container">
       <div className="grid grid-cols-4 lg:grid-cols-12 gap-y-8 gap-x-16">
         {columns &&
           columns.length > 0 &&
@@ -59,7 +59,7 @@ export const ContentBlock: React.FC<
                 })}
                 key={index}
               >
-                {richText && <RichText content={richText} enableGutter={false} />}
+                {richText && <RichText className='flex flex-col gap-4' content={richText} />}
                 {enableLink && <CMSLink {...link} />}
               </div>
             )

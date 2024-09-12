@@ -20,20 +20,16 @@ export const hero: Field = {
       label: 'Type',
       options: [
         {
-          label: 'None',
+          label: 'No Banner',
           value: 'none',
         },
         {
-          label: 'High Impact',
-          value: 'highImpact',
+          label: 'Landing Page Banner', // Normally used for Landing Pages 
+          value: 'landingPageBanner',
         },
         {
-          label: 'Medium Impact',
-          value: 'mediumImpact',
-        },
-        {
-          label: 'Low Impact',
-          value: 'lowImpact',
+          label: 'Content Page Banner', // Normally used for inner pages
+          value: 'contentPageBanner',
         },
       ],
       required: true,

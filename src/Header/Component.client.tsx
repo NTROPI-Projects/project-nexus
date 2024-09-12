@@ -5,9 +5,7 @@ import { usePathname } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import Headroom from 'react-headroom'
 import type { Header } from '@/payload-types'
-
-import { Logo } from '@/components/Logo/Logo'
-import { HeaderNav } from './Nav'
+import { Navbar } from './Nav'
 
 interface HeaderClientProps {
   header: Header
@@ -30,16 +28,12 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ header }) => {
   }, [headerTheme])
 
   return (
-    <Headroom>
-      <header
-        className="container relative z-20 py-8 flex justify-between"
-        {...(theme ? { 'data-theme': theme } : {})}
-      >
-        <Link href="/">
-          <Logo />
-        </Link>
-        <HeaderNav header={header} />
-      </header>
+    <Headroom
+        style={{
+          zIndex: '999'
+        }}
+    >
+      <Navbar navItems={header.navItems} />
     </Headroom>
   )
 }

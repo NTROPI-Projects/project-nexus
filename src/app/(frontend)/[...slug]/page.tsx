@@ -12,7 +12,6 @@ import type { Page, Page as PageType } from '@/payload-types'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
-import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies'
 import { notFound } from 'next/navigation'
 
 export async function generateStaticParams() {
@@ -33,7 +32,6 @@ export async function generateStaticParams() {
 
 export default async function Page({ params: { slug } }) {
   const url = '/' + slug
-  console.log("SLUGGGG", slug)
   let page: PageType | null
 
   page = await queryPageBySlug(slug);
@@ -50,7 +48,7 @@ export default async function Page({ params: { slug } }) {
   const { hero, layout } = page
 
   return (
-    <article className="pt-16 pb-24">
+    <article>
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
 

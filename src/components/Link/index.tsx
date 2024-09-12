@@ -34,12 +34,12 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
   } = props
 
   const href =
-    type === 'reference' && typeof reference?.value === 'object' && reference.value.slug
-      ? `${reference?.relationTo !== 'pages' ? `/${reference?.relationTo}` : ''}/${
-          reference.value.slug
-        }`
-      : url
-
+  type === 'reference' && typeof reference?.value === 'object' && reference.value.slug
+  ? `${reference?.relationTo !== 'pages' ? `/${reference?.relationTo}` : ''}/${
+    reference.value.slug
+  }`
+  : url
+  
   if (!href) return null
 
   const size = appearance === 'link' ? 'clear' : sizeFromProps

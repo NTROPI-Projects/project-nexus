@@ -18,6 +18,7 @@ export interface Config {
     users: User;
     'case-studies': CaseStudy;
     'case-study-categories': CaseStudyCategory;
+    services: Service;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -62,7 +63,7 @@ export interface Page {
   id: string;
   title: string;
   hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
+    type: 'none' | 'landingPageBanner' | 'contentPageBanner';
     richText?: {
       root: {
         type: string;
@@ -157,6 +158,8 @@ export interface Media {
  * via the `definition` "CallToActionBlock".
  */
 export interface CallToActionBlock {
+  backgroundColor?: ('white' | 'darkblue' | 'yurquoise') | null;
+  backgroundImage: string | Media;
   richText?: {
     root: {
       type: string;
@@ -197,6 +200,7 @@ export interface CallToActionBlock {
  * via the `definition` "ContentBlock".
  */
 export interface ContentBlock {
+  backgroundColor?: ('white' | 'darkblue' | 'yurquoise') | null;
   columns?:
     | {
         size?: ('oneThird' | 'half' | 'twoThirds' | 'full' | 'media') | null;
@@ -240,6 +244,7 @@ export interface ContentBlock {
  * via the `definition` "MediaBlock".
  */
 export interface MediaBlock {
+  backgroundColor?: ('white' | 'darkblue' | 'yurquoise') | null;
   position?: ('default' | 'fullscreen') | null;
   media: string | Media;
   id?: string | null;
@@ -251,6 +256,7 @@ export interface MediaBlock {
  * via the `definition` "ArchiveBlock".
  */
 export interface ArchiveBlock {
+  backgroundColor?: ('white' | 'darkblue' | 'yurquoise') | null;
   introContent?: {
     root: {
       type: string;
@@ -365,6 +371,7 @@ export interface User {
  * via the `definition` "FormBlock".
  */
 export interface FormBlock {
+  backgroundColor?: ('white' | 'darkblue' | 'yurquoise') | null;
   form: string | Form;
   enableIntro?: boolean | null;
   introContent?: {
@@ -558,7 +565,7 @@ export interface CaseStudy {
   id: string;
   title: string;
   hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
+    type: 'none' | 'landingPageBanner' | 'contentPageBanner';
     richText?: {
       root: {
         type: string;
@@ -617,6 +624,18 @@ export interface CaseStudyCategory {
   slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services".
+ */
+export interface Service {
+  id: string;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -710,6 +729,7 @@ export interface Header {
           url?: string | null;
           label: string;
         };
+        appearance?: ('default' | 'call-to-action') | null;
         id?: string | null;
       }[]
     | null;
@@ -737,6 +757,8 @@ export interface Footer {
         id?: string | null;
       }[]
     | null;
+  socialLinks?: ('facebook' | 'instagram' | 'linkedin')[] | null;
+  copyright?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -745,6 +767,7 @@ export interface Footer {
  * via the `definition` "BannerBlock".
  */
 export interface BannerBlock {
+  backgroundColor?: ('white' | 'darkblue' | 'yurquoise') | null;
   style: 'info' | 'warning' | 'error' | 'success';
   content: {
     root: {

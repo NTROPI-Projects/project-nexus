@@ -20,33 +20,62 @@ const blockComponents = {
 export const RenderBlocks: React.FC<{
   blocks: Page['layout'][0][]
 }> = (props) => {
-  const { blocks } = props
+  const { blocks } = props;
 
-  const hasBlocks = blocks && Array.isArray(blocks) && blocks.length > 0
+  const hasBlocks = blocks && Array.isArray(blocks) && blocks.length > 0;
 
   if (hasBlocks) {
-    return (
-      <Fragment>
-        {blocks.map((block, index) => {
-          const { blockType } = block
+    let currentBackgroundColor: string | undefined | null;
+    let currentSection: React.ReactNode[] = [];
+    const sections: React.ReactNode[] = [];
 
-          if (blockType && blockType in blockComponents) {
-            const Block = blockComponents[blockType]
+    blocks.forEach((block, index) => {
+      const { blockType, backgroundColor } = block;
 
-            if (Block) {
-              return (
-                <div className="my-16" key={index}>
-                  {/* @ts-expect-error */}
-                  <Block {...block} />
-                </div>
-              )
-            }
-          }
-          return null
-        })}
-      </Fragment>
-    )
+      if (backgroundColor !== currentBackgroundColor) {
+        if (currentSection.length > 0) {
+          sections.push(
+            <section
+              key={`section-${sections.length}`}
+              className={currentBackgroundColor ? `section-bg-${currentBackgroundColor}` : undefined
+              }
+            >
+              {currentSection}
+            </section>
+          );
+          currentSection = [];
+        }
+        currentBackgroundColor = backgroundColor;
+      }
+
+      if (blockType && blockType in blockComponents) {
+        const Block = blockComponents[blockType];
+
+        if (Block) {
+          currentSection.push(
+            <div key={index}>
+              {/* @ts-expect-error */}
+              <Block {...block} />
+            </div>
+          );
+        }
+      }
+    });
+
+    // Add the last section
+    if (currentSection.length > 0) {
+      sections.push(
+        <section
+          key={`section-${sections.length}`}
+          className={currentBackgroundColor ? `section-bg-${currentBackgroundColor}` : undefined}
+        >
+          {currentSection}
+        </section>
+      );
+    }
+
+    return <Fragment>{sections}</Fragment>;
   }
 
-  return null
-}
+  return null;
+};

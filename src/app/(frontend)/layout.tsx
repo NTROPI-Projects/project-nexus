@@ -12,6 +12,11 @@ import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import './globals.css'
 import { draftMode } from 'next/headers'
+import Script from 'next/script'
+
+import { Plus_Jakarta_Sans } from 'next/font/google'
+
+const plusJakartaSans = Plus_Jakarta_Sans({ subsets: ['latin'] })
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = draftMode()
@@ -20,10 +25,28 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang="en" suppressHydrationWarning>
       <head>
         <InitTheme />
+        <Script id="header-height-script" strategy='afterInteractive'>
+          {`
+            function setMainMargin() {
+              const header = document.querySelector('header');
+              const main = document.querySelector('main');
+
+              if(header && main) {
+                const headerHeight = header.offsetHeight * -1;
+                main.style.marginTop = headerHeight + 'px';
+              }
+            }
+
+            setMainMargin();
+            window.addEventListener('resize', setMainMargin);
+            setTimeout(setMainMargin, 100);
+          `}
+        </Script>
+
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
       </head>
-      <body className="flex min-h-full flex-col">
+      <body className={`min-h-full ${plusJakartaSans.className}`}>
         <Providers>
           <AdminBar
             adminBarProps={{
@@ -33,8 +56,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <LivePreviewListener />
 
           <Header />
-          <div className="relative flex flex-auto">
-            <main className="w-full flex-auto">{children}</main>
+          <div className="relative">
+            <main className="w-full overflow-x-hidden">{children}</main>
           </div>
           <Footer />
         </Providers>
