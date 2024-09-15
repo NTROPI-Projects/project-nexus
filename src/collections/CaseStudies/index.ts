@@ -103,9 +103,9 @@ export const CaseStudies: CollectionConfig = {
       },
     },
     {
-      name: 'category',
+      name: 'serviceCategory',
       type: 'relationship',
-      relationTo: 'case-study-categories',
+      relationTo: 'services',
       required: true,
       admin: {
         position: 'sidebar'
@@ -124,48 +124,4 @@ export const CaseStudies: CollectionConfig = {
     },
     maxPerDoc: 50,
   },
-  endpoints: [
-    {
-      path: 'tag/:slug',
-      method: 'get',
-      handler: async (req: PayloadRequest) => {
-        const slug = req.routeParams?.slug
-
-        try {
-          const category = await req.payload.find({
-            collection: 'case-study-categories',
-            where: {
-              slug: {
-                equals: slug
-              }
-            }
-          })
-
-          if (!category.docs.length) {
-            return Response.json({ error: 'Category not found' }, { status: 400 })
-          }
-
-          const categoryId = category.docs[0].id
-
-          const caseStudies = await req.payload.find({
-            collection: 'case-studies',
-            where: {
-              category: {
-                equals: categoryId
-              }
-            }
-          });
-          
-          if (!caseStudies.docs.length) {
-            return Response.json({ error: 'No case studies found with this tag' }, { status: 404 })
-          }
-
-          return Response.json(caseStudies);
-
-        }catch (error) {
-          return Response.json({ error: 'Internal server error' }, { status: 500 })
-        }
-      }
-    }
-  ]
 }

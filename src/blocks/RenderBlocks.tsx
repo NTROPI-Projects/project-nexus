@@ -8,6 +8,9 @@ import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
+import { ContactUsBlock } from './ContactUs/Component'
+import { servicesListBlock } from './ServicesListBlock/Component'
+import { WorkShowcaseBlock } from './WorkShowcaseBlock/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -15,6 +18,9 @@ const blockComponents = {
   cta: CallToActionBlock,
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
+  contactUsBlock: ContactUsBlock,
+  servicesListBlock: servicesListBlock,
+  workShowcaseBlock: WorkShowcaseBlock,
 }
 
 export const RenderBlocks: React.FC<{

@@ -16,7 +16,7 @@ export const backgroundColorField = () => {
             },
             {
                 label: 'Turquoise',
-                value: 'yurquoise',
+                value: 'turquoise',
             },
         ],
         defaultValue: 'white',

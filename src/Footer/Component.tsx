@@ -8,6 +8,7 @@ import { cn } from '@/utilities/cn'
 import { FacebookIcon } from '@/components/Icons/facebook'
 import { InstagramIcon } from '@/components/Icons/instagram'
 import { LinkedinIcon } from '@/components/Icons/linkedin'
+import { Logo } from '@/components/Logo/Logo'
 
 const Icons = {
   "facebook": FacebookIcon,
@@ -28,13 +29,7 @@ export async function Footer() {
     <footer className="text-white">
       <div className="container py-8 gap-8 flex flex-col md:flex-row md:justify-between items-start">
         <Link className="flex items-center" href="/">
-          <picture>
-            <img
-              alt="Payload Logo"
-              className="max-w-[6rem] invert-0"
-              src="https://raw.githubusercontent.com/payloadcms/payload/main/packages/payload/src/admin/assets/images/payload-logo-light.svg"
-            />
-          </picture>
+          <Logo />
         </Link>
 
         <div className="flex flex-col md:items-end gap-5">
@@ -47,7 +42,7 @@ export async function Footer() {
             {socialLinks.map((item) => {
               return (
                 <Link href="/">
-                  <span className={cn(`cuspora_${item}`)}>{Icons.item}</span>
+                  {/* <span className={cn(`cuspora_${item}`)}>{Icons.item}</span> */}
                 </Link>
               )
             })}
@@ -58,7 +53,6 @@ export async function Footer() {
         <div>
           {copyright}
         </div>
-
         <div>
           Designed and Developed by Cuspora
         </div>

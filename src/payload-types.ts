@@ -64,40 +64,21 @@ export interface Page {
   title: string;
   hero: {
     type: 'none' | 'landingPageBanner' | 'contentPageBanner';
-    richText?: {
-      root: {
-        type: string;
-        children: {
-          type: string;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    links?:
-      | {
-          link: {
-            type?: ('reference' | 'custom') | null;
-            newTab?: boolean | null;
-            reference?: {
-              relationTo: 'pages';
-              value: string | Page;
-            } | null;
-            url?: string | null;
-            label: string;
-            appearance?: ('default' | 'outline') | null;
-          };
-          id?: string | null;
-        }[]
-      | null;
-    media?: (string | null) | Media;
+    topHeaderText?: string | null;
+    bottomHeaderText?: string | null;
+    content?: string | null;
+    media: string | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
+  layout: (
+    | CallToActionBlock
+    | ContentBlock
+    | MediaBlock
+    | ArchiveBlock
+    | FormBlock
+    | ContactUsBlock
+    | ServicesListBlock
+    | WorkShowcaseBlock
+  )[];
   meta?: {
     title?: string | null;
     image?: (string | null) | Media;
@@ -158,7 +139,7 @@ export interface Media {
  * via the `definition` "CallToActionBlock".
  */
 export interface CallToActionBlock {
-  backgroundColor?: ('white' | 'darkblue' | 'yurquoise') | null;
+  backgroundColor?: ('white' | 'darkblue' | 'turquoise') | null;
   backgroundImage: string | Media;
   richText?: {
     root: {
@@ -200,7 +181,7 @@ export interface CallToActionBlock {
  * via the `definition` "ContentBlock".
  */
 export interface ContentBlock {
-  backgroundColor?: ('white' | 'darkblue' | 'yurquoise') | null;
+  backgroundColor?: ('white' | 'darkblue' | 'turquoise') | null;
   columns?:
     | {
         size?: ('oneThird' | 'half' | 'twoThirds' | 'full' | 'media') | null;
@@ -244,7 +225,7 @@ export interface ContentBlock {
  * via the `definition` "MediaBlock".
  */
 export interface MediaBlock {
-  backgroundColor?: ('white' | 'darkblue' | 'yurquoise') | null;
+  backgroundColor?: ('white' | 'darkblue' | 'turquoise') | null;
   position?: ('default' | 'fullscreen') | null;
   media: string | Media;
   id?: string | null;
@@ -256,7 +237,7 @@ export interface MediaBlock {
  * via the `definition` "ArchiveBlock".
  */
 export interface ArchiveBlock {
-  backgroundColor?: ('white' | 'darkblue' | 'yurquoise') | null;
+  backgroundColor?: ('white' | 'darkblue' | 'turquoise') | null;
   introContent?: {
     root: {
       type: string;
@@ -371,7 +352,7 @@ export interface User {
  * via the `definition` "FormBlock".
  */
 export interface FormBlock {
-  backgroundColor?: ('white' | 'darkblue' | 'yurquoise') | null;
+  backgroundColor?: ('white' | 'darkblue' | 'turquoise') | null;
   form: string | Form;
   enableIntro?: boolean | null;
   introContent?: {
@@ -559,6 +540,97 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContactUsBlock".
+ */
+export interface ContactUsBlock {
+  backgroundColor?: ('white' | 'darkblue' | 'turquoise') | null;
+  form: string | Form;
+  phone?: {
+    sectionTitle?: string | null;
+    title?: string | null;
+    phone?: string | null;
+  };
+  email?: {
+    sectionTitle?: string | null;
+    title?: string | null;
+    email?: string | null;
+  };
+  location?: {
+    sectionTitle?: string | null;
+    title?: string | null;
+    address?: string | null;
+  };
+  coordinates?: {
+    lon?: string | null;
+    lat?: string | null;
+  };
+  socialLinks?: ('facebook' | 'instagram' | 'linkedin')[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'contactUsBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ServicesListBlock".
+ */
+export interface ServicesListBlock {
+  backgroundColor?: ('white' | 'darkblue' | 'turquoise') | null;
+  sectionTitle?: string | null;
+  selectedServices?: (string | Service)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'servicesListBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services".
+ */
+export interface Service {
+  id: string;
+  title: string;
+  description?: string | null;
+  icon: string | Media;
+  hero: {
+    type: 'none' | 'landingPageBanner' | 'contentPageBanner';
+    topHeaderText?: string | null;
+    bottomHeaderText?: string | null;
+    content?: string | null;
+    media: string | Media;
+  };
+  layout: (
+    | CallToActionBlock
+    | ContentBlock
+    | MediaBlock
+    | ArchiveBlock
+    | FormBlock
+    | ContactUsBlock
+    | ServicesListBlock
+  )[];
+  meta?: {
+    title?: string | null;
+    image?: (string | null) | Media;
+    description?: string | null;
+  };
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "WorkShowcaseBlock".
+ */
+export interface WorkShowcaseBlock {
+  backgroundColor?: ('white' | 'darkblue' | 'turquoise') | null;
+  sectionTitle?: string | null;
+  selectedCaseStudies?: (string | CaseStudy)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'workShowcaseBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "case-studies".
  */
 export interface CaseStudy {
@@ -566,38 +638,10 @@ export interface CaseStudy {
   title: string;
   hero: {
     type: 'none' | 'landingPageBanner' | 'contentPageBanner';
-    richText?: {
-      root: {
-        type: string;
-        children: {
-          type: string;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    links?:
-      | {
-          link: {
-            type?: ('reference' | 'custom') | null;
-            newTab?: boolean | null;
-            reference?: {
-              relationTo: 'pages';
-              value: string | Page;
-            } | null;
-            url?: string | null;
-            label: string;
-            appearance?: ('default' | 'outline') | null;
-          };
-          id?: string | null;
-        }[]
-      | null;
-    media?: (string | null) | Media;
+    topHeaderText?: string | null;
+    bottomHeaderText?: string | null;
+    content?: string | null;
+    media: string | Media;
   };
   layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
   meta?: {
@@ -606,7 +650,7 @@ export interface CaseStudy {
     description?: string | null;
   };
   publishedAt?: string | null;
-  category: string | CaseStudyCategory;
+  serviceCategory: string | Service;
   slug?: string | null;
   slugLock?: boolean | null;
   updatedAt: string;
@@ -624,18 +668,6 @@ export interface CaseStudyCategory {
   slugLock?: boolean | null;
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "services".
- */
-export interface Service {
-  id: string;
-  slug?: string | null;
-  slugLock?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -767,7 +799,7 @@ export interface Footer {
  * via the `definition` "BannerBlock".
  */
 export interface BannerBlock {
-  backgroundColor?: ('white' | 'darkblue' | 'yurquoise') | null;
+  backgroundColor?: ('white' | 'darkblue' | 'turquoise') | null;
   style: 'info' | 'warning' | 'error' | 'success';
   content: {
     root: {

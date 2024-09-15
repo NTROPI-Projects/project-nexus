@@ -13,23 +13,15 @@ export const CallToActionBlock: React.FC<
   Props & {
     id?: string
   }
-> = ({ links, richText, backgroundImage }) => {
+> = ({ links, richText }) => {
   return (
-    <div className="container">
-      <div className="relative rounded overflow-hidden">
-        {backgroundImage && typeof backgroundImage === 'object' && (
-          <div className="absolute inset-0">
-            <Media fill imgClassName="object-cover w-full h-full" priority resource={backgroundImage} />
-          </div>
-        )}
-        <div className={cn('relative z-10 p-10 lg:p-24 flex flex-col gap-8 md:flex-row md:justify-between md:items-center')}>
-          <div className="max-w-[40rem] flex items-start flex-col gap-8">
-            {richText && <RichText className="mb-0 text-white" content={richText} enableGutter={false} />}
-
-            {(links || []).map(({ link }, i) => {
-              return <CMSLink key={i} className='text-black bg-white' size="lg" {...link} />
-            })}
-          </div>
+    <div className="cta-banner container mx-auto">
+      <div className="py-12">
+        <div className='cta-content gap-10 flex flex-col justify-center items-center'>
+          {richText && <RichText className="text-center flex flex-col gap-3 mb-0" content={richText} enableGutter={false} />}
+          {(links || []).map(({ link }, i) => {
+            return <CMSLink key={i} className='text-black bg-white hover:bg-black hover:text-white' size="lg" {...link} />
+          })}
         </div>
       </div>
     </div>

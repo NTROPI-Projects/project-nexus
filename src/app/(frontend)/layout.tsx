@@ -10,13 +10,14 @@ import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
-import './globals.css'
+import './globals.scss'
 import { draftMode } from 'next/headers'
 import Script from 'next/script'
 
-import { Plus_Jakarta_Sans } from 'next/font/google'
+import { Plus_Jakarta_Sans, Unbounded } from 'next/font/google'
 
 const plusJakartaSans = Plus_Jakarta_Sans({ subsets: ['latin'] })
+const unbounded = Unbounded({subsets: ['latin']});
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { isEnabled } = draftMode()
@@ -46,7 +47,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link href="/favicon.ico" rel="icon" sizes="32x32" />
         <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
       </head>
-      <body className={`min-h-full ${plusJakartaSans.className}`}>
+      <body className={`min-h-full ${unbounded.className}`}>
         <Providers>
           <AdminBar
             adminBarProps={{

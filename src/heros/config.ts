@@ -1,14 +1,5 @@
 import type { Field } from 'payload'
 
-import {
-  FixedToolbarFeature,
-  HeadingFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
-
-import { linkGroup } from '@/fields/linkGroup'
-
 export const hero: Field = {
   name: 'hero',
   type: 'group',
@@ -16,7 +7,7 @@ export const hero: Field = {
     {
       name: 'type',
       type: 'select',
-      defaultValue: 'lowImpact',
+      defaultValue: 'contentPageBanner',
       label: 'Type',
       options: [
         {
@@ -35,31 +26,26 @@ export const hero: Field = {
       required: true,
     },
     {
-      name: 'richText',
-      type: 'richText',
-      editor: lexicalEditor({
-        features: ({ rootFeatures }) => {
-          return [
-            ...rootFeatures,
-            HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-            FixedToolbarFeature(),
-            InlineToolbarFeature(),
-          ]
-        },
-      }),
-      label: false,
+      name: 'topHeaderText',
+      type: 'text',
     },
-    linkGroup({
-      overrides: {
-        maxRows: 2,
-      },
-    }),
+    {
+      name: 'bottomHeaderText',
+      type: 'text',
+      admin: {
+        condition: (_, { type } = {}) => ['landingPageBanner'].includes(type),
+      }
+    },
+    {
+      name: 'content',
+      type: 'textarea',
+      admin: {
+        condition: (_, { type } = {}) => ['landingPageBanner'].includes(type),
+      }
+    },
     {
       name: 'media',
       type: 'upload',
-      admin: {
-        condition: (_, { type } = {}) => ['highImpact', 'mediumImpact'].includes(type),
-      },
       relationTo: 'media',
       required: true,
     },

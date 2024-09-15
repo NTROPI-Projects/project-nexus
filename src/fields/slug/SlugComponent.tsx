@@ -39,8 +39,11 @@ export const SlugComponent: React.FC<SlugComponentProps> = ({
   })
 
   const fieldToUseValue = useFormFields(([fields, dispatch]) => {
-    return fields[fieldToUse].value as string
-  })
+    if (!fieldToUse || !fields[fieldToUse]) {
+      return '';
+    }
+    return fields[fieldToUse].value as string;
+  });
 
   useEffect(() => {
     if (checkboxValue) {

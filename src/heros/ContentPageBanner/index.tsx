@@ -4,26 +4,26 @@ import type { Page } from '@/payload-types'
 
 import { CMSLink } from '@/components/Link'
 import RichText from '@/components/RichText'
+import { cn } from '@/utilities/cn'
+import { Media } from '@/components/Media'
 
-export const ContentPageBanner: React.FC<Page['hero']> = ({ links, media, richText }) => {
+export const ContentPageBanner: React.FC<Page['hero']> = ({ media, topHeaderText }) => {
   return (
-    <div className="w-full content-page-banner">
-      <div className="container mx-auto h-full">
-        <div className="flex gap-8 justify-center flex-col w-full md:w-3/5 h-full">
-          {richText && <RichText className="flex gap-4 flex-col" content={richText} enableGutter={false} />}
-          {Array.isArray(links) && links.length > 0 && (
-            <ul className="flex gap-4">
-              {links.map(({ link }, i) => {
-                return (
-                  <li className="list-none" key={i}>
-                    <CMSLink {...link} />
-                  </li>
-                )
-              })}
-            </ul>
-          )}
+    <div className="hero-wrapper relative">
+      <div className="container mx-auto">
+        <div className="page-banner">
+          <div className="grid grid-cols-2">
+            <h1 className={cn('font-semibold col-span-2 text-white text-center')}>{topHeaderText}</h1>
+          </div>
         </div>
       </div>
+
+      {media && typeof media === 'object' && (
+          <React.Fragment>
+            <Media fill imgClassName="-z-10 object-cover" priority resource={media} />
+            <div className="absolute pointer-events-none left-0 bottom-0 w-full h-1/2 bg-gradient-to-t from-black to-transparent" />
+          </React.Fragment>
+        )}
     </div>
   )
 }

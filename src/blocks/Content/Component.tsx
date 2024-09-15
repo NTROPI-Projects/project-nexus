@@ -9,62 +9,58 @@ import { Media } from '@/components/Media'
 
 type Props = Extract<Page['layout'][0], { blockType: 'content' }>
 
-export const ContentBlock: React.FC<
-  {
-    id?: string
-  } & Props
-> = (props) => {
-  const { columns } = props
+type ColSize = 'full' | 'half' | 'oneThird' | 'twoThirds' | 'media';
 
-  const colsSpanClasses = {
-    full: '12',
-    half: '6',
-    oneThird: '4',
-    twoThirds: '8',
-    media: '12',
-  }
+export const ContentBlock: React.FC<Props & { id?: string }> = (props) => {
+  const { columns } = props;
 
-  // Calculate total columns used
-  const usedColumns = columns?.reduce((acc, col) => {
-    if (col.size === 'media') return acc
-    return acc + parseInt(colsSpanClasses[col.size!])
-  }, 0) || 0
+  const colsSpanClasses: Record<ColSize, string> = {
+    full: 'col-span-4 md:col-span-12',
+    half: 'col-span-4 md:col-span-6',
+    oneThird: 'col-span-4 md:col-span-4',
+    twoThirds: 'col-span-4 md:col-span-8',
+    media: 'col-span-4 md:col-span-12',
+  };
 
-  // Calculate remaining columns for media
-  const remainingColumns = 12 - (usedColumns % 12)
+  let hasMedia = columns?.some(({size}) => size === 'media');
 
   return (
-    <div className="container">
-      <div className="grid grid-cols-4 lg:grid-cols-12 gap-y-8 gap-x-16">
+    <div className="container mx-auto px-4">
+      <div className="grid grid-cols-4 md:grid-cols-12 gap-y-8 gap-x-4 md:gap-x-8">
         {columns &&
           columns.length > 0 &&
           columns.map((col, index) => {
-            const { enableLink, link, richText, size, media } = col
+            const { enableLink, link, richText, size = 'full', media } = col;
 
             if (size === 'media' && media) {
               return (
                 <div
-                  className={`col-span-4 lg:col-span-${remainingColumns}`}
+                  className={cn(
+                    colsSpanClasses['half'],
+                    'h-full rounded-[9.6px] overflow-hidden'
+                  )}
                   key={index}
                 >
-                  <Media resource={media} />
+                  <div className="h-full rounded-[9.6px] overflow-hidden">
+                    <Media className="h-full" resource={media} imgClassName="object-cover w-full h-full" />
+                  </div>
                 </div>
-              )
+              );
             }
 
             return (
-              <div
-                className={cn(`col-span-4 lg:col-span-${colsSpanClasses[size!]}`, {
-                  'md:col-span-2': size !== 'full',
-                })}
-                key={index}
-              >
-                {richText && <RichText className='flex flex-col gap-4' content={richText} />}
+              <div className={colsSpanClasses[size ?? 'full']} key={index}>
+                {richText && (
+                  <RichText
+                    className={cn('h-full flex flex-col gap-4', { 'justify-center': hasMedia })}
+                    content={richText}
+                  />
+                )}
                 {enableLink && <CMSLink {...link} />}
               </div>
-            )
+            );
           })}
       </div>
     </div>
-  )
-}
+  );
+};
