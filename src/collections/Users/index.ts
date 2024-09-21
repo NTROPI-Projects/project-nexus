@@ -1,6 +1,8 @@
 import type { CollectionConfig } from 'payload'
 
 import { authenticated } from '../../access/authenticated'
+import ResetPasswordEmail from '@/templates/emails/reset-password';
+import { render } from '@react-email/components';
 
 const Users: CollectionConfig = {
   slug: 'users',
@@ -15,7 +17,33 @@ const Users: CollectionConfig = {
     defaultColumns: ['name', 'email'],
     useAsTitle: 'name',
   },
-  auth: true,
+  auth: {
+    tokenExpiration: 7 * 60 * 60 * 24, // 7 days
+    cookies: {
+      sameSite:
+        process.env.NODE_ENV === 'production' && !process.env.DISABLE_SECURE_COOKIE
+          ? 'None'
+          : undefined,
+
+      secure:
+        process.env.NODE_ENV === 'production' && !process.env.DISABLE_SECURE_COOKIE
+          ? true
+          : undefined,
+
+      domain: process.env.COOKIE_DOMAIN,
+    },
+    forgotPassword: {
+      generateEmailSubject: ({ req, token, user }) => {
+        return `Reset your password for ${user.firstName} ${user.lastName}`;
+      },
+      generateEmailHTML: async ({ req, token, user }) => {
+        console.log("ARGS: ", req);
+        console.log("TOKEN: ", token);
+        console.log("USER: ", user);
+        return render(ResetPasswordEmail({ token }), { pretty: true });
+      },
+    },
+  },
   fields: [
     {
       name: 'name',

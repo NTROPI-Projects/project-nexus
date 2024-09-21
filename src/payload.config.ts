@@ -17,7 +17,7 @@ import {
 import sharp from 'sharp' // editor-import
 import { UnderlineFeature } from '@payloadcms/richtext-lexical'
 import path from 'path'
-import { buildConfig } from 'payload'
+import { buildConfig, EmailAdapter } from 'payload'
 import { fileURLToPath } from 'url'
 
 import Categories from './collections/Categories'
@@ -33,6 +33,24 @@ import { Page, Post } from 'src/payload-types'
 import { CaseStudies } from './collections/CaseStudies'
 import { CaseStudyCategories } from './collections/CaseStudies/categories'
 import { Services } from './collections/Services'
+import { nodemailerAdapter, NodemailerAdapterArgs } from '@payloadcms/email-nodemailer'
+
+import { mailgunTransport, MailGun } from 'nodemailer-mailgun-transport';
+
+import { createTransport } from 'nodemailer';
+
+const mailgunAPIKey = "";
+const mailgunDomain = 'mg.cgowt.com';
+
+const auth: mailgunTransport.Options = {
+  auth: {
+    api_key: mailgunAPIKey,
+    domain: mailgunDomain
+  },
+  host: 'api.eu.mailgun.net'
+}
+
+// const transport = createTransport(MailGun(auth));
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -178,6 +196,20 @@ export default buildConfig({
             return field
           })
         },
+        hooks: {
+          afterChange: [
+            ({ doc, operation, req }) => {
+              if (operation === 'create') {
+                req.payload.sendEmail({
+                  to: 'info@nexusstudio.eu',
+                  from: 'info@nexusstudio.eu',
+                  subject: `${doc.email} filled in the contact form`,
+                  html: '<p>Yay!</p>',
+                })
+              }
+            },
+          ],
+        }
       },
     }),
     payloadCloudPlugin(), // storage-adapter-placeholder
@@ -187,4 +219,9 @@ export default buildConfig({
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
+  // email: nodemailerAdapter({
+  //   defaultFromAddress: 'info@nexusstudios.eu',
+  //   defaultFromName: 'Nexus Studios',
+  //   transport
+  // })
 })
