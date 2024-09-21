@@ -1724,6 +1724,11 @@
   dependencies:
     nodemailer "6.9.10"
 
+"@payloadcms/email-resend@3.0.0-beta.106":
+  version "3.0.0-beta.106"
+  resolved "https://registry.yarnpkg.com/@payloadcms/email-resend/-/email-resend-3.0.0-beta.106.tgz#17d19d04490d31fb087c3022c17ba57815c17b41"
+  integrity sha512-3/WXIYIf6DdvlhEFtJhboOA7QZsKGiZX5ToJddXzz28J5HD01L8Z7D6h2vdW9ML32dq1/9KUKXnVE6USxVdBzw==
+
 "@payloadcms/eslint-config@^1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@payloadcms/eslint-config/-/eslint-config-1.1.1.tgz#bff617b9b7073ac2016f3ebf484b36890c772ecb"

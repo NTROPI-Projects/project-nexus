@@ -50,5 +50,4 @@ export const FormBlock: Block = {
     plural: 'Form Blocks',
     singular: 'Form Block',
   },
-  admin: 
 }

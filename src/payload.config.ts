@@ -33,24 +33,7 @@ import { Page, Post } from 'src/payload-types'
 import { CaseStudies } from './collections/CaseStudies'
 import { CaseStudyCategories } from './collections/CaseStudies/categories'
 import { Services } from './collections/Services'
-import { nodemailerAdapter, NodemailerAdapterArgs } from '@payloadcms/email-nodemailer'
-
-import { mailgunTransport, MailGun } from 'nodemailer-mailgun-transport';
-
-import { createTransport } from 'nodemailer';
-
-const mailgunAPIKey = "";
-const mailgunDomain = 'mg.cgowt.com';
-
-const auth: mailgunTransport.Options = {
-  auth: {
-    api_key: mailgunAPIKey,
-    domain: mailgunDomain
-  },
-  host: 'api.eu.mailgun.net'
-}
-
-// const transport = createTransport(MailGun(auth));
+import { resendAdapter } from '@payloadcms/email-resend'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -66,6 +49,11 @@ const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
 }
 
 export default buildConfig({
+  email: resendAdapter({
+    defaultFromAddress: 'info@nexusstudios.eu',
+    defaultFromName: 'Nexus Studios',
+    apiKey: process.env.RESEND_API_KEY || '',
+  }),
   admin: {
     components: {
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
@@ -209,7 +197,7 @@ export default buildConfig({
               }
             },
           ],
-        }
+        },
       },
     }),
     payloadCloudPlugin(), // storage-adapter-placeholder
@@ -219,9 +207,4 @@ export default buildConfig({
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
-  // email: nodemailerAdapter({
-  //   defaultFromAddress: 'info@nexusstudios.eu',
-  //   defaultFromName: 'Nexus Studios',
-  //   transport
-  // })
 })

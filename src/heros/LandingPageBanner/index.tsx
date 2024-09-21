@@ -25,7 +25,7 @@ export const LandingPageBanner: React.FC<Page['hero']> = ({ media, topHeaderText
             <h1 className={cn('font-semibold col-span-2')}>{topHeaderText}</h1>
             {media && typeof media === 'object' && (
               <div className="relative h-96 my-5 lg:my-10 col-span-2 rounded-[9.6px] overflow-hidden">
-                <Media fill priority resource={media} />
+                <Media fill imgClassName='object-cover' priority resource={media} />
               </div>
             )}
             <h1 className={cn('font-semibold lg:text-right col-span-2')}>{bottomHeaderText}</h1>
