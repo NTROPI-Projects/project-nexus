@@ -34,6 +34,8 @@ import { CaseStudies } from './collections/CaseStudies'
 import { CaseStudyCategories } from './collections/CaseStudies/categories'
 import { Services } from './collections/Services'
 import { resendAdapter } from '@payloadcms/email-resend'
+import { render } from '@react-email/components'
+import FormSubmissionEmail from './templates/emails/form-submission'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -184,21 +186,17 @@ export default buildConfig({
             return field
           })
         },
-        hooks: {
-          afterChange: [
-            ({ doc, operation, req }) => {
-              if (operation === 'create') {
-                req.payload.sendEmail({
-                  to: 'info@nexusstudio.eu',
-                  from: 'info@nexusstudio.eu',
-                  subject: `${doc.email} filled in the contact form`,
-                  html: '<p>Yay!</p>',
-                })
-              }
-            },
-          ],
-        },
       },
+      beforeEmail: async (emails, beforeChangeParams) => {
+        const updatedEmails = await Promise.all(
+          emails.map(async (email) => ({
+            ...email,
+            html: await render(FormSubmissionEmail({ message: email.html }), { pretty: true })
+          }))
+        );
+
+        return updatedEmails;
+      }
     }),
     payloadCloudPlugin(), // storage-adapter-placeholder
   ],
