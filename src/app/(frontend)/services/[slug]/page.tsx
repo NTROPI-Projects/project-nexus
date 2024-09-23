@@ -11,8 +11,6 @@ export default async function SingleServicesPage({ params: { slug } }) {
 
     page = await queryServicePageBySlug(slug);
 
-    console.log("PAGE: ", page);
-
     if(!page) return notFound();
 
     return (
@@ -21,7 +19,7 @@ export default async function SingleServicesPage({ params: { slug } }) {
 }
 
 
-export const queryServicePageBySlug = cache(async (
+const queryServicePageBySlug = cache(async (
     slug?: string[]
   ): Promise<Service | null> => {  
     const { isEnabled: draft } = draftMode();

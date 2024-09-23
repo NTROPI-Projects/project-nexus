@@ -20,8 +20,8 @@ export default function NotFound() {
             <span className="text-lg">404</span>
             <h1 className="mt-2 text-4xl">Page not found</h1>
             <p className="mt-4">
-              Oops! It looks like you've encountered a digital detour. Our mission is to guide you through
-              technology's twists and turns, but it seems we hit a bump in the road. Return to our
+              Oops! It looks like you&apos;ve encountered a digital detour. Our mission is to guide you through
+              technology&apos;s twists and turns, but it seems we hit a bump in the road. Return to our
               homepage and explore how we can help with your technology needs.
             </p>
             <Button asChild variant="default" className="mt-6">

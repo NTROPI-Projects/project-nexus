@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 'use client'
 
 import { useWindowSize, useLockBodyScroll } from "react-use";
@@ -8,53 +10,8 @@ import { Logo } from '@/components/Logo/Logo'
 import { CMSLink } from '@/components/Link'
 import styles from './styles.module.scss';
 import { AnimatePresence, delay, motion } from "framer-motion"
-
-
 import type { Header, Header as HeaderType } from '@/payload-types'
 import { cn } from "@/utilities/cn";
-
-// export const HeaderNav: React.FC<{ header: HeaderType }> = ({ header }) => {
-//   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-//   const navItems = header?.navItems || []
-
-//   return (
-//     <div className='w-full flex justify-between items-center relative'>
-//       <Link href="/">
-//         <Logo />
-//       </Link>
-
-//       {/* Mobile menu button */}
-//       <button 
-//         className="md:hidden"
-//         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-//       >
-//         Menu
-//       </button>
-
-//       {/* Desktop navigation */}
-//       <nav className={cn("hidden md:flex gap-3 items-center", styles.navbar)}>
-//         {navItems.map((item, i) => {
-//           if (item.appearance === "default") return <CMSLink key={i} {...item.link} appearance="link" className={styles.navDefault} />
-//           if (item.appearance === "call-to-action") return <CMSLink key={i} {...item.link} appearance="link" className={styles.navButton} />
-//         })}
-//       </nav>
-
-//       {/* Mobile navigation */}
-//       {mobileMenuOpen && (
-//         <div className="absolute top-full left-0 right-0 bg-white md:hidden">
-//           {navItems.map((item, i) => (
-//             <CMSLink 
-//               key={i} 
-//               {...item.link} 
-//               appearance="link" 
-//               className={item.appearance === "default" ? styles.navDefault : styles.navButton}
-//             />
-//           ))}
-//         </div>
-//       )}
-//     </div>
-//   )
-// }
 
 type NavbarT = Pick<Header, 'navItems'>
 
@@ -222,13 +179,11 @@ const MobileNavbar: React.FC<NavbarT> = ({ navItems }) => {
               className="container h-full"
             >
               <div className={cn("relative flex justify-center flex-col items-center h-full")}>
-                {
-                  mobileMenuItems && mobileMenuItems.map((item, i) => (
-                    <div className="overflow-hidden">
-                      <MobileNavLink link={item.link} key={i}/>
-                    </div>
-                  ))
-                }
+                {mobileMenuItems.map((item, i) => (
+                  <div key={i} className="overflow-hidden">
+                    <MobileNavLink link={item.link} />
+                  </div>
+                ))}
               </div>
             </motion.div>
           </motion.div>

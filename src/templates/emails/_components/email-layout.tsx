@@ -5,7 +5,7 @@ import EmailFooter from './email-footer';
 
 type EmailLayoutProps = {
   children: React.ReactNode;
-  preview?: string;
+  preview: string | string[];
 };
 
 export const EmailLayout = ({ children, preview }: EmailLayoutProps) => {

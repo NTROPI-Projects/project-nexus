@@ -16,7 +16,7 @@ interface FormSubmissionEmailProps {
 }
 
 export const FormSubmissionEmail = ({ message }: FormSubmissionEmailProps) => (
-    <EmailLayout preview="Reset Password">
+    <EmailLayout preview="Form Submission">
         <Section style={content}>
             <div dangerouslySetInnerHTML={{ __html: message }} />
         </Section>

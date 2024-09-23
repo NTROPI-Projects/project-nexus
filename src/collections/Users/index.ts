@@ -1,8 +1,20 @@
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig, PayloadRequest } from 'payload'
 
 import { authenticated } from '../../access/authenticated'
 import ResetPasswordEmail from '@/templates/emails/reset-password';
 import { render } from '@react-email/components';
+import { User } from '@/payload-types';
+
+interface GenerateEmailHTMLParams {
+  req: PayloadRequest;
+  token: string;
+  user: User;
+}
+
+interface GenerateEmailSubjectParams {
+  req: PayloadRequest,
+  user: User
+}
 
 const Users: CollectionConfig = {
   slug: 'users',
@@ -33,14 +45,11 @@ const Users: CollectionConfig = {
       domain: process.env.COOKIE_DOMAIN,
     },
     forgotPassword: {
-      generateEmailSubject: ({ req, token, user }) => {
-        return `Reset your password for ${user.firstName} ${user.lastName}`;
+      generateEmailSubject: ({ req, user }: GenerateEmailSubjectParams) => {
+        return `Reset your password for ${user?.name}`
       },
-      generateEmailHTML: async ({ req, token, user }) => {
-        console.log("ARGS: ", req);
-        console.log("TOKEN: ", token);
-        console.log("USER: ", user);
-        return render(ResetPasswordEmail({ token }), { pretty: true });
+      generateEmailHTML: async ({ req, token, user }: GenerateEmailHTMLParams) => {
+        return render(ResetPasswordEmail({ token }), { pretty: true })
       },
     },
   },

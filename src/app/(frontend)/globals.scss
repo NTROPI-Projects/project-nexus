@@ -322,3 +322,25 @@ h2 {
     transition: background-color 0.5s ease-out;
   }
 }
+
+.headroom--unfixed {
+  header {
+    div {
+      nav {
+        a {
+          color: #0A2540 !important;
+
+        }
+
+        ul {
+          border-color: #0A2540;
+
+          a {
+            color: #0A2540 !important;
+          }
+        }
+      }
+    }
+
+  }
+}

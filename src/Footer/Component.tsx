@@ -10,7 +10,7 @@ import { InstagramIcon } from '@/components/Icons/instagram'
 import { LinkedinIcon } from '@/components/Icons/linkedin'
 import { Logo } from '@/components/Logo/Logo'
 
-const Icons = {
+const Icons: Record<string, React.ComponentType<React.SVGProps<SVGSVGElement>>> = {
   "facebook": FacebookIcon,
   "instagram": InstagramIcon,
   "linkedin": LinkedinIcon
@@ -34,17 +34,18 @@ export async function Footer() {
 
         <div className="flex flex-col md:items-end gap-5">
           <div className="flex flex-col items-start md:flex-row gap-4 md:items-center">
-            {navItems.map(({ link }, i) => {
-              return <CMSLink className="text-white" key={i} {...link} />
-            })}
+            {navItems.map(({ link }, i) => (
+              <CMSLink className="text-white" key={i} {...link} />
+            ))}
           </div>
           <div className="flex gap-2">
-            {socialLinks.map((item) => {
-              return (
-                <Link href="/">
-                  {/* <span className={cn(`cuspora_${item}`)}>{Icons.item}</span> */}
+            {socialLinks.map((item, index) => {
+              const IconComponent = Icons[item.toLowerCase() as keyof typeof Icons];
+              return IconComponent ? (
+                <Link key={`${item}-${index}`} href="/" aria-label={`Visit our ${item} page`}>
+                  <IconComponent className={cn(`cuspora_${item.toLowerCase()}`)} />
                 </Link>
-              )
+              ) : null;
             })}
           </div>
         </div>
@@ -60,5 +61,3 @@ export async function Footer() {
     </footer>
   )
 }
-
-
