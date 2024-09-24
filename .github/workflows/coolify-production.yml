@@ -26,7 +26,7 @@ env:
   R2_TOKEN: ${{vars.R2_TOKEN}}
 jobs: 
   deploy:
-    runs-on: ubuntu_latest
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
