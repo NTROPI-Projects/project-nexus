@@ -70,7 +70,7 @@ jobs:
           file: Dockerfile.webapp
           platforms: linux/amd64
           push: true
-          tags: ${{env.REGISTRY}}/${{env.IMAGE_NAME}}:latest
+          tags: ${{env.REGISTRY}}/${{env.IMAGE_NAME}}:${{ github.sha }}
           build-args: |
             ENV_FILE=.env
 
