@@ -336,6 +336,7 @@ export interface Post {
 export interface User {
   id: string;
   name?: string | null;
+  roles: ('admin' | 'public')[];
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -343,6 +344,8 @@ export interface User {
   resetPasswordExpiration?: string | null;
   salt?: string | null;
   hash?: string | null;
+  _verified?: boolean | null;
+  _verificationToken?: string | null;
   loginAttempts?: number | null;
   lockUntil?: string | null;
   password?: string | null;

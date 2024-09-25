@@ -52,13 +52,23 @@ const Users: CollectionConfig = {
         return render(ResetPasswordEmail({ token }), { pretty: true })
       },
     },
+    verify: true,
   },
   fields: [
     {
       name: 'name',
       type: 'text',
     },
+    {
+      name: 'roles',
+      type: 'select',
+      hasMany: true,
+      defaultValue: ['public'],
+      required: true,
+      options: ['admin', 'public'],
+    },
   ],
+
   timestamps: true,
 }
 
