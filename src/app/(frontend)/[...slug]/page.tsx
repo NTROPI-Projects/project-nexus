@@ -30,7 +30,7 @@ export async function generateStaticParams() {
 }
 
 export default async function Page({ params: { slug } }) {
-  const url = '/' + slug
+  const url = '/' + (Array.isArray(slug) ? slug.join('/') : slug)
   let page: PageType | null
 
   page = await queryPageBySlug(slug);
@@ -43,9 +43,7 @@ export default async function Page({ params: { slug } }) {
 
   return (
     <article>
-      {/* Allows redirects for valid pages too */}
-      <PayloadRedirects disableNotFound url={url} />
-
+      <PayloadRedirects url={url} disableNotFound />
       <RenderHero {...hero} />
       <RenderBlocks blocks={layout} />
     </article>

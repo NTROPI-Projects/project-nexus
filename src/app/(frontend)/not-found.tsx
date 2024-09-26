@@ -4,7 +4,6 @@ import RadialGradiant from '@/components/RadialGradiant';
 
 export default function NotFound() {
   return (
-
     <div className="w-full overflow-x-hidden">
       <div className="absolute inset-0 -z-10 blur-[100px]" aria-hidden="true">
         <RadialGradiant size={400} />
@@ -21,12 +20,16 @@ export default function NotFound() {
             <h1 className="mt-2 text-4xl">Page not found</h1>
             <p className="mt-4">
               Oops! It looks like you&apos;ve encountered a digital detour. Our mission is to guide you through
-              technology&apos;s twists and turns, but it seems we hit a bump in the road. Return to our
-              homepage and explore how we can help with your technology needs.
+              technology&apos;s twists and turns, but it seems we hit a bump in the road. We apologize for the inconvenience.
             </p>
-            <Button asChild variant="default" className="mt-6">
-              <Link href="/">Go home</Link>
-            </Button>
+            <div className="mt-6 space-x-4">
+              <Button asChild variant="default">
+                <Link href="javascript:history.back()">Go back</Link>
+              </Button>
+              <Button asChild variant="outline">
+                <Link href="/">Go to homepage</Link>
+              </Button>
+            </div>
           </div>
         </div>
       </div>

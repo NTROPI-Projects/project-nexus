@@ -63,7 +63,7 @@ const Users: CollectionConfig = {
       name: 'roles',
       type: 'select',
       hasMany: true,
-      defaultValue: ['public'],
+      defaultValue: ['admin'],
       required: true,
       options: ['admin', 'public'],
     },

@@ -1,6 +1,4 @@
 import type { Metadata } from 'next'
-
-import { cn } from 'src/utilities/cn'
 import React from 'react'
 
 import { AdminBar } from '@/components/AdminBar'
