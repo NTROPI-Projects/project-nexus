@@ -52,7 +52,7 @@ const Users: CollectionConfig = {
         return render(ResetPasswordEmail({ token }), { pretty: true })
       },
     },
-    verify: true,
+    // verify: true,
   },
   fields: [
     {

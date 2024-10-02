@@ -3,8 +3,7 @@ import type { Metadata } from 'next'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import configPromise from '@payload-config'
 import { getPayloadHMR } from '@payloadcms/next/utilities'
-import { draftMode } from 'next/headers'
-import React, { cache } from 'react'
+import React from 'react'
 
 import type { Page, Page as PageType } from '@/payload-types'
 
@@ -12,6 +11,7 @@ import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import { notFound } from 'next/navigation'
+import { queryPageBySlug } from '@/utilities/getPageBySlug'
 
 export async function generateStaticParams() {
   const payload = await getPayloadHMR({ config: configPromise })
@@ -57,28 +57,3 @@ export async function generateMetadata({ params: { slug } }): Promise<Metadata> 
 
   return generateMeta({ doc: page })
 }
- 
-export const queryPageBySlug = cache(async (
-  incomingSlugSegments?: string[]
-): Promise<Page | null> => {
-  const slugSegments = incomingSlugSegments || ['home'];
-  const slug = slugSegments.at(-1);
-
-  const { isEnabled: draft } = draftMode();
-
-  const payload = await getPayloadHMR({ config: configPromise });
-
-  const result = await payload.find({
-    collection: 'pages',
-    draft,
-    limit: 1,
-    overrideAccess: true,
-    where: {
-      slug: {
-        equals: slug
-      }
-    }
-  })
-
-  return result.docs?.[0] || null
-})
