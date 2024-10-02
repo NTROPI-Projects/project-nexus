@@ -1,6 +1,6 @@
 // storage-adapter-import-placeholder
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
-import { s3Storage as s3StoragePlugin } from '@payloadcms/storage-s3';
+import { s3Storage as s3StoragePlugin } from '@payloadcms/storage-s3'
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
@@ -127,8 +127,8 @@ export default buildConfig({
     url: process.env.DATABASE_URI || '',
   }),
   collections: [Pages, Posts, Media, Categories, Users, CaseStudies, CaseStudyCategories, Services],
-  cors: [process.env.PAYLOAD_PUBLIC_SERVER_URL || ''].filter(Boolean),
-  csrf: [process.env.PAYLOAD_PUBLIC_SERVER_URL || ''].filter(Boolean),
+  cors: ['https://nexusstudios.eu', 'http://localhost:8080', 'https://localhost:8080'],
+  csrf: ['https://nexusstudios.eu', 'http://localhost:8080', 'https://localhost:8080'],
   globals: [Header, Footer],
   plugins: [
     redirectsPlugin({
@@ -190,16 +190,16 @@ export default buildConfig({
         const updatedEmails = await Promise.all(
           emails.map(async (email) => ({
             ...email,
-            html: await render(FormSubmissionEmail({ message: email.html }), { pretty: true })
-          }))
-        );
+            html: await render(FormSubmissionEmail({ message: email.html }), { pretty: true }),
+          })),
+        )
 
-        return updatedEmails;
-      }
+        return updatedEmails
+      },
     }),
     s3StoragePlugin({
       collections: {
-        ['media']: true
+        ['media']: true,
       },
       bucket: process.env.R2_BUCKET!,
       config: {
@@ -208,10 +208,9 @@ export default buildConfig({
           accessKeyId: process.env.R2_ACCESS_KEY_ID!,
           secretAccessKey: process.env.R2_SECRET_ACCESS_KEY!,
         },
-        region: 'auto'
-      }
-
-    })
+        region: 'auto',
+      },
+    }),
   ],
   secret: process.env.PAYLOAD_SECRET!,
   sharp,
