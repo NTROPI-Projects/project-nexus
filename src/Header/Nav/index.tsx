@@ -31,7 +31,7 @@ const DesktopNavbar: React.FC<NavbarT> = ({ navItems }) => {
             <Logo />
           </Link>
 
-          {defaultItems && (
+          {defaultItems && defaultItems.length > 0 && (
             <ul
               className={cn(
                 'flex flex-nowrap items-center justify-start list-none m-0 p-0 gap-3',
@@ -44,7 +44,7 @@ const DesktopNavbar: React.FC<NavbarT> = ({ navItems }) => {
             </ul>
           )}
 
-          {ctaItems && (
+          {ctaItems && ctaItems.length > 0 && (
             <ul>
               {ctaItems.map((item, i) => (
                 <CMSLink key={i} {...item.link} appearance="link" className={styles.navButton} />
