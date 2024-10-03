@@ -2,23 +2,26 @@
 
 'use client'
 
-import { useWindowSize, useLockBodyScroll } from "react-use";
+import { useWindowSize, useLockBodyScroll } from 'react-use'
 
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Logo } from '@/components/Logo/Logo'
 import { CMSLink } from '@/components/Link'
-import styles from './styles.module.scss';
-import { AnimatePresence, delay, motion } from "framer-motion"
+import styles from './styles.module.scss'
+import { AnimatePresence, delay, motion } from 'framer-motion'
 import type { Header, Header as HeaderType } from '@/payload-types'
-import { cn } from "@/utilities/cn";
+import { cn } from '@/utilities/cn'
 
 type NavbarT = Pick<Header, 'navItems'>
 
 const DesktopNavbar: React.FC<NavbarT> = ({ navItems }) => {
-  const hasNavItems = navItems && Array.isArray(navItems) && navItems.length > 0;
-  const defaultItems = hasNavItems && navItems.filter((item) => item.appearance === 'default').map((item) => item);
-  const ctaItems = hasNavItems && navItems.filter((item) => item.appearance === 'call-to-action').map((item) => item);
+  const hasNavItems = navItems && Array.isArray(navItems) && navItems.length > 0
+  const defaultItems =
+    hasNavItems && navItems.filter((item) => item.appearance === 'default').map((item) => item)
+  const ctaItems =
+    hasNavItems &&
+    navItems.filter((item) => item.appearance === 'call-to-action').map((item) => item)
 
   return (
     <header>
@@ -28,30 +31,37 @@ const DesktopNavbar: React.FC<NavbarT> = ({ navItems }) => {
             <Logo />
           </Link>
 
-          <ul className={cn("flex flex-nowrap items-center justify-start list-none m-0 p-0 gap-3", styles.navbar)}>
-            {
-              defaultItems && defaultItems.map((item, i) => (
+          {defaultItems && (
+            <ul
+              className={cn(
+                'flex flex-nowrap items-center justify-start list-none m-0 p-0 gap-3',
+                styles.navbar,
+              )}
+            >
+              {defaultItems.map((item, i) => (
                 <CMSLink key={i} {...item.link} appearance={'link'} className={styles.navDefault} />
-              ))
-            }
-          </ul>
+              ))}
+            </ul>
+          )}
 
-          <ul>
-            {ctaItems && ctaItems.map((item, i) => (
-              <CMSLink key={i} {...item.link} appearance="link" className={styles.navButton} />
-            ))}
-          </ul>
+          {ctaItems && (
+            <ul>
+              {ctaItems.map((item, i) => (
+                <CMSLink key={i} {...item.link} appearance="link" className={styles.navButton} />
+              ))}
+            </ul>
+          )}
         </nav>
       </div>
     </header>
-  );
+  )
 }
 
 const MobileNavbar: React.FC<NavbarT> = ({ navItems }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  useLockBodyScroll(isOpen);
-  const hasNavItems = navItems && Array.isArray(navItems) && navItems.length > 0;
-  const mobileMenuItems = hasNavItems && navItems.map((item) => item);
+  const [isOpen, setIsOpen] = useState(false)
+  useLockBodyScroll(isOpen)
+  const hasNavItems = navItems && Array.isArray(navItems) && navItems.length > 0
+  const mobileMenuItems = hasNavItems && navItems.map((item) => item)
 
   const menuVars = {
     initial: {
@@ -72,7 +82,7 @@ const MobileNavbar: React.FC<NavbarT> = ({ navItems }) => {
         ease: [0.22, 1, 0.36, 1],
       },
     },
-  };
+  }
 
   const containerVars = {
     initial: {
@@ -88,7 +98,7 @@ const MobileNavbar: React.FC<NavbarT> = ({ navItems }) => {
         staggerDirection: 1,
       },
     },
-  };
+  }
 
   const opacityVars = {
     initial: {
@@ -106,11 +116,11 @@ const MobileNavbar: React.FC<NavbarT> = ({ navItems }) => {
         duration: 0.7,
       },
     },
-  };
+  }
 
   const bottomVars = {
     initial: {
-      y: "30vh",
+      y: '30vh',
       opacity: 0,
       transition: {
         duration: 0.5,
@@ -131,9 +141,13 @@ const MobileNavbar: React.FC<NavbarT> = ({ navItems }) => {
   return (
     <header>
       <div className="container relative flex justify-between">
-        <div className={cn("flex items-center justify-between w-full", styles.navMobileWrapper)}>
-          <Link href="/"><Logo /></Link>
-          <div className="cursor-pointer" onClick={() => setIsOpen(!isOpen)}>Menu</div>
+        <div className={cn('flex items-center justify-between w-full', styles.navMobileWrapper)}>
+          <Link href="/">
+            <Logo />
+          </Link>
+          <div className="cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
+            Menu
+          </div>
         </div>
       </div>
 
@@ -144,12 +158,14 @@ const MobileNavbar: React.FC<NavbarT> = ({ navItems }) => {
             initial="initial"
             animate="animate"
             exit="exit"
-            className={cn("fixed", styles.navMobile)}
+            className={cn('fixed', styles.navMobile)}
           >
-            <div className={cn("absolute", styles.navMobileTop)}>
+            <div className={cn('absolute', styles.navMobileTop)}>
               <div className="container">
                 <div className="overflow-hidden">
-                  <div className={cn("flex justify-between overflow-hidden", styles.navMobileWrapper)}>
+                  <div
+                    className={cn('flex justify-between overflow-hidden', styles.navMobileWrapper)}
+                  >
                     <motion.div
                       variants={opacityVars}
                       initial="initial"
@@ -165,7 +181,9 @@ const MobileNavbar: React.FC<NavbarT> = ({ navItems }) => {
                       animate="open"
                       exit="initial"
                     >
-                      <div className="cursor-pointer" onClick={() => setIsOpen(!isOpen)}>Close</div>
+                      <div className="cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
+                        Close
+                      </div>
                     </motion.div>
                   </div>
                 </div>
@@ -178,7 +196,7 @@ const MobileNavbar: React.FC<NavbarT> = ({ navItems }) => {
               exit="initial"
               className="container h-full"
             >
-              <div className={cn("relative flex justify-center flex-col items-center h-full")}>
+              <div className={cn('relative flex justify-center flex-col items-center h-full')}>
                 {mobileMenuItems.map((item, i) => (
                   <div key={i} className="overflow-hidden">
                     <MobileNavLink link={item.link} />
@@ -193,12 +211,12 @@ const MobileNavbar: React.FC<NavbarT> = ({ navItems }) => {
   )
 }
 
-type NavLink = NonNullable<NavbarT['navItems']>[number];
+type NavLink = NonNullable<NavbarT['navItems']>[number]
 
 const MobileNavLink: React.FC<NavLink> = ({ link }) => {
   const mobileLinkVars = {
     initial: {
-      y: "30vh",
+      y: '30vh',
       transition: {
         duration: 0.5,
         ease: [0.37, 0, 0.63, 1],
@@ -211,27 +229,28 @@ const MobileNavLink: React.FC<NavLink> = ({ link }) => {
         duration: 0.7,
       },
     },
-  };
+  }
 
   return (
     <motion.div variants={mobileLinkVars} className={cn(styles.navMobileLink)}>
-      <Link href={link.url ?? ''}>
-        {link.label}
-      </Link>
+      <Link href={link.url ?? ''}>{link.label}</Link>
     </motion.div>
   )
 }
 
 export const Navbar: React.FC<NavbarT> = ({ navItems }) => {
-  const size = useWindowSize();
-  const [isClient, setIsClient] = useState(false);
+  const size = useWindowSize()
+  const [isClient, setIsClient] = useState(false)
 
   useEffect(() => {
-    setIsClient(true);
+    setIsClient(true)
   }, [])
 
-  if (!isClient) return null;
+  if (!isClient) return null
 
-  return size.width > 768 ? <DesktopNavbar navItems={navItems} /> : <MobileNavbar navItems={navItems} />
+  return size.width > 768 ? (
+    <DesktopNavbar navItems={navItems} />
+  ) : (
+    <MobileNavbar navItems={navItems} />
+  )
 }
-
