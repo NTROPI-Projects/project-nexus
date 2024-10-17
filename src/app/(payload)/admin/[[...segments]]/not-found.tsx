@@ -7,12 +7,8 @@ import { NotFoundPage, generatePageMetadata } from '@payloadcms/next/views'
 import { importMap } from '../importMap'
 
 type Args = {
-  params: {
-    segments: string[]
-  }
-  searchParams: {
-    [key: string]: string | string[]
-  }
+  params: any
+  searchParams: any
 }
 
 export const generateMetadata = ({ params, searchParams }: Args): Promise<Metadata> =>
