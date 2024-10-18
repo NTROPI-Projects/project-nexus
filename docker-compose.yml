@@ -1,17 +1,18 @@
-version: '3.8'
+version: '3'
 
 services:
-  mongo:
-    image: mongo
-    restart: always
-    container_name: nexus_studios
+  # Service for the Next.js app
+  app:
+    # Build the Docker image using the Dockerfile in the current directory
+    image: project-nexus-app-image
+    build: .
+    container_name: project-nexus-app
     ports:
-      - 27017:27017
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: username
-      MONGO_INITDB_ROOT_PASSWORD: password
+      - '3000:3000'  # Map port 3000 inside the container to port 3000 on your local machine
+    env_file: 
+      - .env  # Load environment variables from the .env file
     volumes:
-      - data:/data/db
+      - .:/app  # Mount the current directory inside the Docker container
+    command: yarn start  # Command to run the Next.js app
+    restart: unless-stopped  # Automatically restart the service if it stops
 
-volumes:
-  data:
