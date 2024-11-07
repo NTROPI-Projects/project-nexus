@@ -1,0 +1,94 @@
+name: Digital Ocean Build and Deploy
+
+on: [push, pull_request]
+
+jobs:
+  # Build job: continuous integration, including testing and docker
+  build:
+    environment:
+      name: testing
+    env:
+      DATABASE_HOSTNAME: ${{ secrets.DATABASE_HOSTNAME }}
+      DATABASE_PORT: ${{ secrets.DATABASE_PORT }}
+      DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+      DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
+      DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      ALGORITHM: ${{ secrets.ALGORITHM }}
+      ACCESS_TOKEN_EXPIRE_MINUTES: 30
+
+    services:
+      mongo:
+        image: mongo
+        env:
+          MONGO_INITDB_ROOT_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+          MONGO_INITDB_ROOT_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+        ports:
+          - 27017:27017
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm run test
+
+      - name: Login to GitHub Docker Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: ./
+          file: ./Dockerfile
+          push: true
+          tags: ghcr.io/${{ github.repository }}:latest
+
+      - name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
+
+  # Deploy job: continuous delivery
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [build]
+    environment:
+      name: production
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v2
+
+      - name: SSH into DigitalOcean and deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            docker pull ghcr.io/${{ github.repository }}:latest
+            docker stop app || true
+            docker rm app || true
+            docker run -d --name app -p 80:3000 \
+              -e DATABASE_HOSTNAME=${{ secrets.DATABASE_HOSTNAME }} \
+              -e DATABASE_PORT=${{ secrets.DATABASE_PORT }} \
+              -e DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }} \
+              -e DATABASE_NAME=${{ secrets.DATABASE_NAME }} \
+              -e DATABASE_USERNAME=${{ secrets.DATABASE_USERNAME }} \
+              -e SECRET_KEY=${{ secrets.SECRET_KEY }} \
+              -e ALGORITHM=${{ secrets.ALGORITHM }} \
+              -e ACCESS_TOKEN_EXPIRE_MINUTES=30 \
+              ghcr.io/${{ github.repository }}:latest
